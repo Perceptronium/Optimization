@@ -15,6 +15,7 @@ from optimization_algorithms.interface.mathematical_program_traced import  Mathe
 #from optimization_algorithms.mathematical_programs.quadratic_identity_2 import QuadraticIdentity2
 from my_functions.f_sq import f_sq
 from my_functions.f_hole import f_hole
+from optimization_algorithms.mathematical_programs.hole import Hole
 from my_functions.f_rastrigin import f_rastrigin
 from plots.plots2d import plotFunc
 
@@ -27,8 +28,9 @@ class testSolver0(unittest.TestCase):
     """
     Solver = GENERAL_SOLVER
     #problem = MathematicalProgramTraced(f_sq(c = 10, size = 2))
-    #problem = MathematicalProgramTraced(f_hole(a = 0.1, c = 10, size = 2))
-    problem = MathematicalProgramTraced(f_rastrigin(a = 5, c = 1, size = 2))
+    problem = MathematicalProgramTraced(f_hole(a = 0.1, c = 10, size = 2))
+    #problem = MathematicalProgramTraced(Hole(10,2))
+    #problem = MathematicalProgramTraced(f_rastrigin(a = 5, c = 1, size = 2))
 
     def testConstructor(self):
         """
@@ -42,7 +44,7 @@ class testSolver0(unittest.TestCase):
         """
         check that student solver converges
         """
-        solver = self.Solver(algorithm = 'gradient_descent')
+        solver = self.Solver(algorithm = 'newton_method')
         solver.setProblem((self.problem))
         output =  solver.solve()
         last_trace = self.problem.trace_x[-1]

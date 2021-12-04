@@ -111,12 +111,13 @@ class GENERAL_SOLVER(NLPSolver):
             except :    
                 delta = -J/np.linalg.norm(J) # Ill-defined
             
-            if J.T @ delta > 0 : # Non-descent
-                delta = -J/np.linalg.norm(J)
+            #if J.T @ delta > 0 : # Non-descent
+                #delta = -J/np.linalg.norm(J)
 
-            while(np.linalg.norm(alpha*delta) >= 0.0001):
+            while(np.linalg.norm(alpha*delta) >= 0.01):
 
                 phi, J = self.evaluate(x)
+                #H = self.problem.getFHessian(x)
                 delta = np.linalg.solve(H + lambd * np.eye(2), -J)
                 print(f'Iter {iter_ctr} cost : {phi}')
 
