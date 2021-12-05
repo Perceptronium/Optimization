@@ -29,7 +29,6 @@ class testSolver(unittest.TestCase):
         solver = self.Solver()
 
     def testQuadraticIdentity(self):
-        print("Testing quadratic identity 2")
         problem = MathematicalProgramTraced(QuadraticIdentity2())
         solver = self.Solver()
         solver.setProblem((problem))
@@ -39,7 +38,6 @@ class testSolver(unittest.TestCase):
 
 
     def testRosenbrock(self):
-        print("Testing rosenbrock")
         problem = MathematicalProgramTraced(Rosenbrock(2, 100))
         solver = self.Solver()
         solution = np.array([2, 4])
@@ -49,7 +47,6 @@ class testSolver(unittest.TestCase):
         self.assertTrue(np.allclose(last_trace, solution, 1e-2, 1e-2))
 
     def testHole(self):
-        print("Testing hole")
 
         def make_C_exercise1(n, c):
             """
@@ -72,7 +69,6 @@ class testSolver(unittest.TestCase):
         self.assertTrue(success)
 
     def testNonLinearSOS(self):
-        print("Testing non linear sos")
         problem = MathematicalProgramTraced(Logistic())
         solver = self.Solver()
         solver.setProblem((problem))

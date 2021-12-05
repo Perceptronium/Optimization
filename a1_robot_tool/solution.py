@@ -84,7 +84,7 @@ class RobotTool(MathematicalProgram):
         MathematicalProgram.getDimension
         """
         # return the input dimensionality of the problem (size of x)
-        # return
+        return self.q0.shape[0]
 
     def getInitializationSample(self):
         """
@@ -92,7 +92,7 @@ class RobotTool(MathematicalProgram):
         ------
         MathematicalProgram.getInitializationSample
         """
-        # return ...
+        return self.q0
 
     def getFeatureTypes(self):
         """

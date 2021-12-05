@@ -51,9 +51,7 @@ class SolverUnconstrained(NLPSolver):
         x = self.problem.getInitializationSample()
         return x
 
-
-    
-    
+   
     def evaluate(self, x, index_f, index_r):
         phi, J = self.problem.evaluate(x)
         c = 0
@@ -84,7 +82,7 @@ class SolverUnconstrained(NLPSolver):
         if np.all(eigs > 0):              # No need for damping
             lambd = 0
         else:
-            lambd = -np.amin(eigs) + 0.1   # Damping by at least 0.01
+            lambd = -np.amin(eigs) + 0.1   # Damping by at least 0.01 and minimal eigval
         return lambd
     
 
@@ -97,7 +95,6 @@ class SolverUnconstrained(NLPSolver):
         if (J.T @ delta) > 0: # Non_descent
             delta = - J / np.linalg.norm(J)
 
-        #print(f'delta value : {delta}')
         return delta
 
 
@@ -109,7 +106,6 @@ class SolverUnconstrained(NLPSolver):
         NLPSolver.solve
 
         """
-        
         
         #=========================================
         # LEARNING ABOUT THE PROBLEM
@@ -141,11 +137,8 @@ class SolverUnconstrained(NLPSolver):
         H = self.compute_hessian(x, J, index_f, index_r) # Initial value for Hessian
         lambd = self.compute_lambda(H)                   # Computing initial lambda
 
-        #delta = self.compute_delta(H, lambd, J)
         x_old = np.inf
 
-        
-        
         #==================================================
         # CORE : CLASSIC NEWTON WITH GAUSS-NEWTON FALLBACK
         #==================================================
@@ -154,7 +147,7 @@ class SolverUnconstrained(NLPSolver):
             phi, J = self.evaluate(x, index_f, index_r) # Updating current cost and Jacobian values
              
             H = self.compute_hessian(x, J, index_f, index_r) # Updating current Hessian values
-            #print(f'Iter {iter_ctr} cost : {phi}') # Uncomment this for verbosity
+            #print(f'Iter {iter_ctr} cost : {phi}') # Uncomment this for more verbosity
 
             lambd = self.compute_lambda(H) # Updating lambda
             delta = self.compute_delta(H, lambd, J) # Updating delta
@@ -165,19 +158,17 @@ class SolverUnconstrained(NLPSolver):
                 phi_ad, _ = self.evaluate(x + alpha*delta, index_f, index_r) # Updating f(x + alpha*delta)
 
             x = x + alpha*delta # Accepting step
-            alpha = np.minimum(rho_plus*alpha, 1) # Incresaing stepsize
-            #alpha = 1 # This works better on the test functions
+            #alpha = np.minimum(rho_plus*alpha, 1) # Incresaing stepsize
+            alpha = 1 # Resetting alpha works better on the test functions
             
             
             iter_ctr += 1 # Updating iteration counter
             if iter_ctr == watchdog: # If watchdog is awaken, abort program and return -1
                 print("Suspected divergence. Aborting program.")
                 return -1
-            #print(np.linalg.norm(x_old - x)) # Uncomment this for verbosity
+            #print(np.linalg.norm(x_old - x)) # Uncomment this for more verbosity
         
 
-        
-        
         
         #=========================================
         # RESULTS

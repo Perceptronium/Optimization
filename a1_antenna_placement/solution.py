@@ -35,7 +35,7 @@ class AntennaPlacement(MathematicalProgram):
         """
         y = 0
         J = 0
-        # Could be improved with vectorizing
+        # Could be improved with vectorizing but I found this more readable
         for i, pop in enumerate(self.w):
             sub = x - self.P[i]
             inside_exp = - np.inner(sub,sub)
@@ -60,7 +60,7 @@ class AntennaPlacement(MathematicalProgram):
         ------
         MathematicalProgram.getFHessian
         """
-        # Could be improved with vectorizing
+        # Could be improved with vectorizing but I found this more readable
         H = 0
         for i, pop in enumerate(self.w):
             sub = x - self.P[i]
